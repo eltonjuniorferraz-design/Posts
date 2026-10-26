@@ -2,33 +2,30 @@
 
 Site de murais para reunir projetos de alunos por turma, tema ou evento.
 
-## O que está preparado
+## Status
 
-- Vários murais para o professor organizar atividades.
-- Alunos acessam pelo link/QR e publicam nome, título, descrição, texto, imagem ou GIF.
-- Novas postagens são transmitidas ao mural aberto sem atualizar a página.
-- O professor entra na conta para criar, editar e administrar os murais.
-- Postagens salvas apenas neste navegador não são copiadas automaticamente para a nuvem.
-- Apresentação em tela cheia, impressão em PDF e cópia de segurança JSON.
+O site está publicado e conectado ao projeto Supabase. O banco já tem as tabelas, regras de acesso e atualizações ao vivo configuradas.
 
-## Ativar a sincronização na nuvem
+- Professor cria uma conta, confirma o e-mail e entra para administrar murais.
+- Alunos acessam o mural por link ou QR e enviam nome, título, descrição, texto, imagem ou GIF.
+- Novas postagens aparecem no mural aberto automaticamente.
+- O professor pode apresentar os projetos, imprimir em PDF e baixar cópia de segurança.
+- Conteúdo que estava salvo apenas no navegador não foi copiado para a nuvem.
 
-O site está no GitHub Pages, mas precisa de um projeto Supabase para que a contribuição compartilhada funcione.
+## Primeiro acesso
 
-1. Crie um projeto Supabase chamado **Postagens**. Ao criar o projeto, defina a senha do banco diretamente no painel e guarde-a em um gerenciador de senhas. Não envie essa senha por mensagem e não a coloque no site.
-2. No Supabase, abra **SQL Editor**, cole e execute o arquivo `supabase-postagens.sql`.
-3. Em **Project Settings → API Keys**, copie o **Project URL** e a chave **publishable** (`sb_publishable_...`). Nunca use `service_role`, `secret` ou senha do banco no navegador.
-4. Em `index.html` e `cloud.js`, substitua `https://SEU-PROJETO.supabase.co` e `COLE_SUA_CHAVE_PUBLICAVEL_AQUI` pelos valores do seu projeto. As duas chaves são dados públicos do cliente; a proteção dos dados é feita pelas regras no banco.
-5. Em Authentication, configure a URL do site como `https://eltonjuniorferraz-design.github.io/Posts/`. Crie a conta de professor pelo botão **Entrar na nuvem → Criar conta** e confirme o e-mail.
-6. Aguarde a publicação do GitHub Pages. Entre como professor, crie um mural e escolha **Compartilhar**. Envie o link/QR aos alunos.
+1. Abra [Postagens](https://eltonjuniorferraz-design.github.io/Posts/).
+2. Escolha **Entrar na nuvem → Criar conta** e confirme o endereço pelo e-mail.
+3. Entre, crie um mural e escolha **Compartilhar** para gerar link e QR dos alunos.
 
 ## Acesso e privacidade
 
-Os dados das tabelas não ficam abertos para consulta direta. O SQL usa regras para que o professor administre os próprios murais; os alunos só acessam os dados pelo código aleatório do link daquele mural e podem enviar postagens. Qualquer pessoa que receba o link pode visualizar e enviar conteúdo. A pasta de imagens usa URLs públicas para que os trabalhos apareçam sem login. Evite publicar dados pessoais sensíveis, fotos identificáveis ou informações que não tenham autorização para compartilhamento.
+O professor administra os próprios murais. Alunos não precisam de conta: o código aleatório no link dá acesso àquele mural para visualizar e enviar projetos. Qualquer pessoa que receba o link poderá participar. As imagens usam URLs públicas para aparecer sem login. Evite dados pessoais sensíveis, fotos identificáveis e informações sem autorização de compartilhamento.
 
-Sem o projeto Supabase e os valores públicos configurados nos dois arquivos, o site continua na prévia local e não sincroniza entre aparelhos.
+A chave **publishable** do Supabase usada no navegador é pública por definição; as permissões são controladas pelas regras do banco. Nunca coloque chaves **secret/service_role** nem a senha do banco no site.
 
-## Publicação
+O banco Supabase foi criado na região **East US (North Virginia)**.
 
-O site está publicado em <https://eltonjuniorferraz-design.github.io/Posts/> pela branch `main` na pasta raiz.
+## Repositório e publicação
 
+O site está publicado pelo GitHub Pages a partir da branch `main`, pasta raiz: https://eltonjuniorferraz-design.github.io/Posts/.
