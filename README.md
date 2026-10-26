@@ -8,6 +8,7 @@ Site de murais para reunir projetos de alunos por turma, tema ou evento.
 - Alunos acessam pelo link/QR e publicam nome, título, descrição, texto, imagem ou GIF.
 - Novas postagens são transmitidas ao mural aberto sem atualizar a página.
 - O professor entra na conta para criar, editar e administrar os murais.
+- Postagens salvas apenas neste navegador não são copiadas automaticamente para a nuvem.
 - Apresentação em tela cheia, impressão em PDF e cópia de segurança JSON.
 
 ## Ativar a sincronização na nuvem
