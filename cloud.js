@@ -56,15 +56,13 @@
     if(!signedInUser){app.toast('Entre na conta do professor para criar um link compartilhado.');app.open('authDialog');return}
     if(!b.isCloud){
       try{
-        const remote=await createBoard(b.title,b.description);const rows=[];
-        for(const p of b.posts)rows.push({board_id:remote.id,author_name:p.name,title:p.title,description:p.description||'',body:p.text||'',image_path:await uploadExistingImage(remote.share_code,p.image)});
-        if(rows.length){const {error}=await db.from('posts').insert(rows);if(error)throw error}
-        Object.assign(b,remote);app.save();app.render();await loadPosts(b);watchTeacherBoard();
+        const remote=await createBoard(b.title,b.description);
+        app.data.boards.unshift(remote);app.data.active=remote.id;app.save();app.render();watchTeacherBoard();
       }catch(e){app.toast(`Não foi possível compartilhar: ${e.message}`);return}
     }
     const link=`${location.origin}${location.pathname}?mural=${encodeURIComponent(b.share_code)}`;
     $('shareLink').textContent=link;$('qrBox').innerHTML='';app.open('shareDialog');
-    $('shareDialog').querySelector('.notice').innerHTML='<span>ⓘ</span><div>Qualquer pessoa com este link pode ver o mural e enviar projetos. Evite incluir dados pessoais sensíveis.</div>';
+    $('shareDialog').querySelector('.notice').innerHTML='<span>ⓘ</span><div>Qualquer pessoa com este link pode ver o mural e enviar projetos. O conteúdo local antigo fica neste aparelho; só as novas postagens deste mural serão compartilhadas. Evite dados pessoais sensíveis.</div>';
     if(window.QRCode)new QRCode($('qrBox'),{text:link,width:190,height:190,colorDark:'#252a29',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});
   }
   function drawStudentPage(board,rows) {
