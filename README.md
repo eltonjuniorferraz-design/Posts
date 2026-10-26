@@ -1,6 +1,6 @@
-# Postagens — murais colaborativos
+# Muralê — murais colaborativos
 
-Site de murais para reunir projetos de alunos por turma, tema ou evento.
+Muralê é um espaço para reunir e apresentar projetos de alunos por turma, tema ou evento.
 
 ## Status
 
@@ -14,7 +14,7 @@ O site está publicado e conectado ao projeto Supabase. O banco já tem as tabel
 
 ## Primeiro acesso
 
-1. Abra [Postagens](https://eltonjuniorferraz-design.github.io/Posts/).
+1. Abra [Muralê](https://eltonjuniorferraz-design.github.io/Posts/).
 2. Escolha **Entrar na nuvem → Criar conta** e confirme o endereço pelo e-mail.
 3. Entre, crie um mural e escolha **Compartilhar** para gerar link e QR dos alunos.
 
