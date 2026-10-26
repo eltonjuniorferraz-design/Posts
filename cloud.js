@@ -1,6 +1,6 @@
 (() => {
-  const projectUrl = 'https://SEU-PROJETO.supabase.co';
-  const publicKey = 'COLE_SUA_CHAVE_PUBLICAVEL_AQUI';
+  const projectUrl = 'https://wgedkhmotadlnzrjjzru.supabase.co';
+  const publicKey = 'sb_publishable_Lwdrkt8EFTgNUA37gOzUUA_RISYGQQe';
   const configured = window.supabase && !projectUrl.includes('SEU-PROJETO') && publicKey.length > 20 && !publicKey.includes('COLE_');
   const db = configured ? window.supabase.createClient(projectUrl, publicKey) : null;
   const app = window.PostagensState;
