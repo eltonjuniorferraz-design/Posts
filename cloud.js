@@ -86,7 +86,21 @@
     if(configured&&authHint)authHint.textContent='Primeiro acesso? Crie uma conta de professor e confirme o e-mail. Depois entre para criar murais compartilhados.';
     $('cloudBtn').onclick=async()=>{if(!configured){app.toast('O Supabase ainda não foi configurado.');return}const {data}=await db.auth.getSession();signedInUser=data.session?.user||null;if(signedInUser){try{await managedBoards();app.toast('Murais sincronizados.')}catch(e){app.toast(`Erro na nuvem: ${e.message}`)}}else app.open('authDialog')};
     $('authForm').addEventListener('submit',async e=>{e.preventDefault();if(!configured){app.toast('O Supabase ainda não foi configurado.');return}const {data,error}=await db.auth.signInWithPassword({email:$('authEmail').value.trim(),password:$('authPassword').value});if(error){app.toast(`Não foi possível entrar: ${error.message}`);return}signedInUser=data.user;app.close('authDialog');try{await managedBoards();app.toast('Conectado à nuvem.')}catch(err){app.toast(`Erro ao carregar murais: ${err.message}`)}},true);
-    $('signUpBtn').onclick=async()=>{if(!configured){app.toast('O Supabase ainda não foi configurado.');return}const {data,error}=await db.auth.signUp({email:$('authEmail').value.trim(),password:$('authPassword').value});if(error){app.toast(`Não foi possível criar a conta: ${error.message}`);return}if(data.session){signedInUser=data.user;app.close('authDialog');await managedBoards()}else app.toast('Confira seu e-mail para confirmar a conta e depois entre.')};
+    $('signUpBtn').onclick=async()=>{
+      const form=$('authForm');
+      if(!form.reportValidity())return;
+      if(!configured){app.toast('O Supabase ainda não foi configurado.');return}
+      try{
+        const {data,error}=await db.auth.signUp({
+          email:$('authEmail').value.trim(),
+          password:$('authPassword').value,
+          options:{emailRedirectTo:location.origin+location.pathname}
+        });
+        if(error){app.toast(`Não foi possível criar a conta: ${error.message}`);return}
+        if(data.session){signedInUser=data.user;app.close('authDialog');await managedBoards()}
+        else app.toast('Conta criada. Confira seu e-mail para confirmar o acesso e depois entre.');
+      }catch(err){app.toast(`Não foi possível criar a conta: ${err.message}`)}
+    };
     $('boardForm').addEventListener('submit',async e=>{if(!configured)return;e.preventDefault();e.stopImmediatePropagation();if(!signedInUser){app.toast('Entre na conta do professor para criar um mural compartilhado.');app.open('authDialog');return}try{const b=await createBoard($('newBoardTitle').value.trim(),$('newBoardDesc').value.trim());app.data.boards.unshift(b);app.data.active=b.id;app.save();app.render();app.close('boardDialog');e.target.reset();watchTeacherBoard();app.toast('Mural compartilhado criado.')}catch(err){app.toast(`Não foi possível criar: ${err.message}`)}},true);
     $('shareBtn').onclick=()=>shareBoard(app.board());
     $('copyLinkBtn').onclick=async()=>{try{await navigator.clipboard.writeText($('shareLink').textContent);app.toast('Link do mural copiado.')}catch{app.toast('Selecione e copie o link exibido.')}};
