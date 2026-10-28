@@ -74,7 +74,7 @@
   function showSlide(){const posts=board().posts;if(!posts.length)return toast('Adicione postagens antes de iniciar a apresentação.');const p=posts[slideIndex];$('slideImage').style.backgroundColor=safeColor(p.mediaColor||'#e8eee8');$('slideBoard').textContent=board().title;$('slideAuthor').textContent=p.name;$('slideTitle').textContent=p.title;$('slideBody').innerHTML=[p.description,p.text].filter(Boolean).map(cleanRich).join('<br><br>');$('slideImage').innerHTML=p.image?`<img src="${p.image}" alt="">`:'✳';$('slideCount').textContent=`${slideIndex+1} / ${posts.length}`;$('presentation').classList.add('open')};$('presentBtn').onclick=()=>{slideIndex=0;showSlide()};$('prevSlide').onclick=()=>{slideIndex=(slideIndex-1+board().posts.length)%board().posts.length;showSlide()};$('nextSlide').onclick=()=>{slideIndex=(slideIndex+1)%board().posts.length;showSlide()};$('closePresentation').onclick=()=>$('presentation').classList.remove('open');document.addEventListener('keydown',e=>{if(!$('presentation').classList.contains('open'))return;if(e.key==='Escape')$('presentation').classList.remove('open');if(e.key==='ArrowRight')$('nextSlide').click();if(e.key==='ArrowLeft')$('prevSlide').click()});render();
 })();
 </script>
-<script src="cloud.js?v=20261028-3" defer></script>
+<script src="cloud.js?v=20261028-4" defer></script>
 </body>
 </html>
 
