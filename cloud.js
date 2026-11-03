@@ -116,7 +116,36 @@
     if(error||!board){document.body.insertAdjacentHTML('afterbegin','<main class="content"><h1>Mural não encontrado</h1><p>Confira se o link compartilhado está correto.</p></main>');return}
     const {data:rows,error:postError}=await db.rpc('list_shared_posts',{p_share_code:shareCode,p_voter_id:voterId()});if(postError){document.body.insertAdjacentHTML('afterbegin','<main class="content"><h1>Não foi possível carregar as postagens</h1><p>Tente abrir o link novamente.</p></main>');return}drawStudentPage(board,rows||[]);
   }
+  function bindWorkspaceAccountMenu(demo=false) {
+    const button=$('workspaceAccountBtn'),menu=$('workspaceAccountMenu');
+    const close=()=>{menu.hidden=true;button.setAttribute('aria-expanded','false')};
+    const updateSummary=()=>{
+      const user=demo?null:signedInUser;
+      const name=demo?'Demonstração':user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'Professor';
+      $('workspaceAccountName').textContent=name;
+      $('workspaceAccountEmail').textContent=demo?'Modo local de demonstração':user?.email||'Conta do professor';
+    };
+    button.onclick=()=>{updateSummary();menu.hidden=!menu.hidden;button.setAttribute('aria-expanded',menu.hidden?'false':'true')};
+    document.addEventListener('click',e=>{if(!e.target.closest('.workspace-account'))close()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+    $('workspaceProfileBtn').onclick=()=>{
+      close();
+      const user=demo?null:signedInUser;
+      const name=demo?'Modo demonstração':user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'Professor';
+      $('homeProfileName').textContent=name;
+      $('homeProfileEmail').textContent=user?.email||(demo?'Dados de teste salvos neste navegador':'Conta do professor');
+      $('homeProfileHelp').textContent=demo?'Este espaço de demonstração é separado dos seus murais da nuvem.':user?'Sua conta de professor organiza seus murais e projetos.':'Entre nos murais para acessar seu perfil e organizar seus projetos.';
+      $('homeProfileEnter').textContent=demo?'Voltar à demonstração':'Voltar aos murais';
+      $('homeProfileEnter').onclick=()=>app.close('homeProfileDialog');
+      app.open('homeProfileDialog');
+    };
+    $('workspaceSettingsBtn').onclick=()=>{close();app.open('backgroundDialog')};
+    $('workspaceHomeBtn').onclick=()=>{close();location.href=location.pathname};
+    updateSummary();
+  }
+
   function bindTeacher() {
+    bindWorkspaceAccountMenu(false);
     const lockPage=()=>{document.body.classList.remove('teacher-open','auth-checking');document.body.classList.add('auth-required');$('cloudBtn').textContent='☁ Entrar';$('cloudBtn').setAttribute('aria-label','Entrar na conta do professor')};
     const showChecking=()=>{document.body.classList.remove('teacher-open','auth-required');document.body.classList.add('auth-checking')};
     const unlockPage=()=>{document.body.classList.remove('auth-required','auth-checking');document.body.classList.add('teacher-open');$('cloudBtn').textContent='↪ Sair';$('cloudBtn').setAttribute('aria-label','Sair da conta do professor')};
@@ -175,6 +204,7 @@
     $('cloudBtn').onclick=leaveDemo;
     $('demoExit').onclick=leaveDemo;
     $('homeNavBack').onclick=leaveDemo;
+    bindWorkspaceAccountMenu(true);
     $('welcomeDemo').onclick=()=>{location.href=location.pathname+'?demo=1'};
     app.toast('Modo demonstração: seus testes ficam salvos neste navegador.');
   }else if(appMode){
