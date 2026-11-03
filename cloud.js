@@ -190,12 +190,32 @@
     }
   }else{
     document.body.classList.add('home-view');
-    const goHomeApp=()=>enterApp(false);
-    $('homeEnterTop').onclick=goHomeApp;
+    let homeAccountUser=null;
+    const homeAccountMenu=$('homeAccountMenu'),homeAccountBtn=$('homeAccountBtn');
+    const closeHomeAccountMenu=()=>{homeAccountMenu.hidden=true;homeAccountBtn.setAttribute('aria-expanded','false')};
+    const updateHomeProfile=user=>{
+      homeAccountUser=user||null;
+      const name=homeAccountUser?.user_metadata?.full_name||homeAccountUser?.user_metadata?.name||homeAccountUser?.email?.split('@')[0]||'Visitante';
+      $('homeAccountName').textContent=homeAccountUser?name:'Visitante';
+      $('homeAccountEmail').textContent=homeAccountUser?.email||'Entre nos murais para acessar sua conta';
+      $('homeLogout').hidden=!homeAccountUser;
+      $('homeProfileName').textContent=homeAccountUser?name:'Visitante';
+      $('homeProfileEmail').textContent=homeAccountUser?.email||'Sem conta conectada';
+      $('homeProfileHelp').textContent=homeAccountUser?'Sua conta de professor organiza seus murais e projetos.':'Entre nos murais para acessar seu perfil e organizar seus projetos.';
+    };
+    const goHomeApp=()=>{closeHomeAccountMenu();enterApp(false)};
+    homeAccountBtn.onclick=()=>{homeAccountMenu.hidden=!homeAccountMenu.hidden;homeAccountBtn.setAttribute('aria-expanded',homeAccountMenu.hidden?'false':'true')};
+    document.addEventListener('click',e=>{if(!e.target.closest('.home-account'))closeHomeAccountMenu()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHomeAccountMenu()});
+    $('homeProfileBtn').onclick=()=>{closeHomeAccountMenu();app.open('homeProfileDialog')};
+    $('homeSettingsBtn').onclick=goHomeApp;
+    $('homeMenuEnter').onclick=goHomeApp;
+    $('homeProfileEnter').onclick=()=>{app.close('homeProfileDialog');enterApp(false)};
+    $('homeLogout').onclick=async()=>{if(!configured){app.toast('A conexão da conta ainda não está disponível.');return}try{const {error}=await db.auth.signOut();if(error)throw error;updateHomeProfile(null);closeHomeAccountMenu();app.toast('Você saiu da conta.')}catch(err){app.toast('Não foi possível sair da conta: '+err.message)}};
     $('homeEnter').onclick=goHomeApp;
     $('homeEnterBottom').onclick=goHomeApp;
-    $('homeSignup').onclick=()=>enterApp(true);
     $('homeDemo').onclick=()=>{location.href=location.pathname+'?demo=1'};
+    if(configured){db.auth.getSession().then(({data,error})=>{if(!error)updateHomeProfile(data.session?.user||null)}).catch(()=>updateHomeProfile(null));db.auth.onAuthStateChange((event,session)=>updateHomeProfile(session?.user||null))}else updateHomeProfile(null);
   }
 })();
 
