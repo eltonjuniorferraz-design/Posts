@@ -95,8 +95,8 @@ grant execute on function public.add_shared_post(text,text,text,text,text,text) 
 grant execute on function public.valid_post_image_path(text) to anon, authenticated;
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
-values('post-images','post-images',true,3145728,array['image/png','image/jpeg','image/gif','image/webp'])
-on conflict (id) do update set public=true,file_size_limit=3145728,allowed_mime_types=excluded.allowed_mime_types;
+values('post-images','post-images',true,26214400,array['image/png','image/jpeg','image/gif','image/webp','video/mp4','video/webm','video/quicktime'])
+on conflict (id) do update set public=true,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
 
 drop policy if exists "Shared mural visitors may upload images" on storage.objects;
 create policy "Shared mural visitors may upload images" on storage.objects
