@@ -68,6 +68,12 @@
 .board-item .board-link .count{flex:0 0 auto;min-width:20px;margin-left:auto;text-align:right;white-space:nowrap}
 .board-item .board-delete{display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;margin:0;padding:0;background:#fff0ed;color:#963f31;opacity:1;visibility:visible}
 .board-item .board-delete:hover{background:#f8dcd6;color:#7b3026}
+
+/* Destaque da marca na página inicial */
+.home-brand{gap:12px}
+.home-brand .brand-mark{width:44px;height:44px;border-radius:15px;font-size:23px;box-shadow:0 6px 16px #3c725f25}
+.home-brand strong{font-size:clamp(23px,2.2vw,27px);background:linear-gradient(105deg,#32775d 5%,#547f75 42%,#d67f60 78%,#d9a936 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+@media(max-width:680px){.home-brand .brand-mark{width:40px;height:40px;font-size:21px}.home-brand strong{font-size:23px}}
 </style>
 </head>
 <body>
