@@ -55,6 +55,19 @@
 #boardCanvas .hero h1{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:normal;line-height:1.12}
 #boardCanvas .hero-actions{flex:0 1 auto;max-width:52%}
 @media(max-width:860px){#boardCanvas .hero-actions{max-width:100%}}
+
+/* Mantém o contador e o comando de excluir dentro da largura do menu */
+@media(min-width:861px){
+  .app{grid-template-columns:280px minmax(0,1fr)}
+  .sidebar{padding-inline:14px}
+}
+.board-list,.board-item{width:100%;min-width:0}
+.board-item{gap:3px}
+.board-item .board-link{flex:1 1 auto;width:auto;min-width:0;padding:8px 7px;gap:7px}
+.board-item .board-link>span:nth-child(2){flex:1 1 auto;min-width:0}
+.board-item .board-link .count{flex:0 0 auto;min-width:20px;margin-left:auto;text-align:right;white-space:nowrap}
+.board-item .board-delete{display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;margin:0;padding:0;background:#fff0ed;color:#963f31;opacity:1;visibility:visible}
+.board-item .board-delete:hover{background:#f8dcd6;color:#7b3026}
 </style>
 </head>
 <body>
