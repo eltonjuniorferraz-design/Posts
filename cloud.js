@@ -29,7 +29,7 @@
     const persist=()=>{
       if(app.getEditing())return;
       const value={name:$('studentName').value,title:$('projectTitle').value,description:app.getRich('projectText'),mediaColor:$('postMediaColor').value,cardColor:$('postCardColor').value,font:form.querySelector('[data-font-select]')?.value||'DM Sans',textColor:form.querySelector('[data-text-color]')?.value||'#252a29',updatedAt:Date.now()};
-      if(!value.name.trim()&&!value.title.trim()&&!app.plainRich(value.description).trim()){empty();return}
+      if(!value.name.trim()&&!value.title.trim()&&!app.plainRich(value.description).trim()){if(!read()){message.textContent=help;discard.hidden=true}return}
       try{localStorage.setItem(key(),JSON.stringify(value));show('Rascunho salvo automaticamente neste aparelho.')}catch{message.textContent='Não foi possível salvar o rascunho neste aparelho.'}
     };
     const restore=()=>{
